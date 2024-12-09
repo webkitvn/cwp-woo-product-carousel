@@ -1,0 +1,37 @@
+.embla {
+    overflow: hidden;
+    width: 100%;
+    margin: 20px 0;
+
+    &__container {
+        display: flex;
+    }
+
+    &__slide {
+        position: relative;
+        min-width: 200px;
+        margin-right: 10px;
+        background: #f9f9f9;
+        padding: 10px;
+        text-align: center;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 10px;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #333;
+        }
+    }
+}
