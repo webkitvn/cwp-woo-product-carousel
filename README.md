@@ -1,0 +1,1 @@
+# cwp-woo-product-carousel
