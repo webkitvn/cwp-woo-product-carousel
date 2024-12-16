@@ -177,14 +177,6 @@ class CWP_Woo_Product_Carousel_Settings
                 'section'   => 'cwp_advanced_section',
                 'tab'       => 'advanced-settings',
                 'default'   => false
-            ],
-            [
-                'id'        => 'custom_css',
-                'title'     => __('Custom CSS', 'cwp-woo-product-carousel'),
-                'type'      => 'textarea',
-                'section'   => 'cwp_advanced_section',
-                'tab'       => 'advanced-settings',
-                'default'   => ''
             ]
         ];
     }
