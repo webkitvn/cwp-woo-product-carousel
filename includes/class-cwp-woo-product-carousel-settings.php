@@ -5,10 +5,15 @@ if (! defined('ABSPATH')) {
 
 class CWP_Woo_Product_Carousel_Settings
 {
-    private string $option_name = 'cwp_woo_product_carousel_options';
+    const OPTION_NAME = 'cwp_woo_product_carousel_options';
+    const SECTION_LAYOUT = 'cwp_layout_section';
+
+    private $option_name = self::OPTION_NAME;
     private array $options = [];
     private array $sections = [];
     private array $fields = [];
+
+    private bool $settings_registered = false;
 
     public function __construct()
     {
@@ -59,7 +64,6 @@ class CWP_Woo_Product_Carousel_Settings
     private function define_fields(): void
     {
         $this->fields = [
-            // Layout Fields
             [
                 'id'        => 'mobile_products',
                 'title'     => __('Number of Products (Mobile)', 'cwp-woo-product-carousel'),
@@ -153,6 +157,8 @@ class CWP_Woo_Product_Carousel_Settings
                 'section'   => 'cwp_behavior_section',
                 'tab'       => 'behavior-settings',
                 'default'   => 500,
+                'min'       => 100,
+                'max'       => 2000
             ],
             [
                 'id'        => 'autoplay_speed',
@@ -161,6 +167,8 @@ class CWP_Woo_Product_Carousel_Settings
                 'section'   => 'cwp_behavior_section',
                 'tab'       => 'behavior-settings',
                 'default'   => 3000,
+                'min'       => 1000,
+                'max'       => 10000
             ],
             [
                 'id'        => 'conditional_loading',
@@ -183,14 +191,14 @@ class CWP_Woo_Product_Carousel_Settings
 
     private function init_hooks(): void
     {
-        add_action('admin_init', [$this, 'register_settings']);
+        add_action('admin_init', [$this, 'register_settings'], 10);
         add_action('admin_menu', [$this, 'add_menu_page']);
         add_action('admin_footer', [$this, 'add_tab_navigation_script']);
     }
 
     public function add_tab_navigation_script(): void
     {
-        ?>
+?>
         <script type="text/javascript">
             jQuery(document).ready(function($) {
                 $('.nav-tab').click(function(e) {
@@ -202,17 +210,22 @@ class CWP_Woo_Product_Carousel_Settings
                 });
             });
         </script>
-        <?php
+    <?php
     }
 
     public function register_settings(): void
     {
+        if ($this->settings_registered) {
+            return;
+        }
+        $this->settings_registered = true;
+    
         register_setting(
             'cwp_woo_product_carousel_options_group',
             $this->option_name,
             [$this, 'sanitize_options']
         );
-
+    
         $this->register_sections();
         $this->register_fields();
     }
@@ -250,7 +263,7 @@ class CWP_Woo_Product_Carousel_Settings
             __('CWP Product Carousel Settings', 'cwp-woo-product-carousel'),
             __('CWP Product Carousel', 'cwp-woo-product-carousel'),
             'manage_options',
-            'cwp-woo-product-carousel',
+            'cwp_woo_product_carousel',
             [$this, 'settings_page']
         );
     }
@@ -258,17 +271,18 @@ class CWP_Woo_Product_Carousel_Settings
     public function sanitize_options(array $input): array
     {
         $new_input = [];
-        
+
         foreach ($this->fields as $field) {
             $id = $field['id'];
-            
-            if (isset($input[$id])) {
+
+            if ($field['type'] === 'checkbox') {
+                // Explicitly handle checkboxes - set false if not in input
+                $new_input[$id] = isset($input[$id]) ? filter_var($input[$id], FILTER_VALIDATE_BOOLEAN) : false;
+            } else if (isset($input[$id])) {
+                // Handle other field types as before
                 switch ($field['type']) {
                     case 'number':
                         $new_input[$id] = $this->sanitize_number($input[$id], $field);
-                        break;
-                    case 'checkbox':
-                        $new_input[$id] = filter_var($input[$id], FILTER_VALIDATE_BOOLEAN);
                         break;
                     case 'textarea':
                         $new_input[$id] = sanitize_textarea_field($input[$id]);
@@ -285,28 +299,25 @@ class CWP_Woo_Product_Carousel_Settings
     private function sanitize_number($value, array $field): int
     {
         $number = intval($value);
-        
+
         if (isset($field['min']) && $number < $field['min']) {
             $number = $field['min'];
         }
-        
+
         if (isset($field['max']) && $number > $field['max']) {
             $number = $field['max'];
         }
-        
+
         return $number;
     }
 
     public function section_callback(array $args): void
     {
-        $descriptions = [
-            'cwp_layout_section'     => __('Configure the layout and design settings for the product carousel.', 'cwp-woo-product-carousel'),
-            'cwp_behavior_section'   => __('Configure the behavior settings for the product carousel.', 'cwp-woo-product-carousel'),
-            'cwp_advanced_section'   => __('Configure the advanced settings for the product carousel.', 'cwp-woo-product-carousel')
-        ];
-
         $section = $args['id'];
-        echo '<p>' . ($descriptions[$section] ?? '') . '</p>';
+        $description = $this->sections[$section]['description'] ?? '';
+        if ($description) {
+            echo '<p>' . esc_html($description) . '</p>';
+        }
     }
 
     public function render_field(array $args): void
@@ -350,37 +361,38 @@ class CWP_Woo_Product_Carousel_Settings
         if (!current_user_can('manage_options')) {
             return;
         }
-        ?>
+    ?>
         <div class="wrap">
             <h1><?php _e('CWP Product Carousel Settings', 'cwp-woo-product-carousel'); ?></h1>
+            <p><?php _e('Lightweight and customizable product carousel for WooCommerce.', 'cwp-woo-product-carousel'); ?></p>
             <h2 class="nav-tab-wrapper">
-                <?php 
-                    $first = true;
-                    foreach ($this->sections as $section) {
-                        $class = $first ? 'nav-tab nav-tab-active' : 'nav-tab';
-                        echo sprintf(
-                            '<a href="#%s" class="%s">%s</a>',
-                            esc_attr($section['tab']),
-                            $class,
-                            esc_html($section['title'])
-                        );
-                        $first = false;
-                    }
+                <?php
+                $first = true;
+                foreach ($this->sections as $section) {
+                    $class = $first ? 'nav-tab nav-tab-active' : 'nav-tab';
+                    echo sprintf(
+                        '<a href="#%s" class="%s">%s</a>',
+                        esc_attr($section['tab']),
+                        $class,
+                        esc_html($section['title'])
+                    );
+                    $first = false;
+                }
                 ?>
             </h2>
             <form action="options.php" method="post">
-                <?php 
+                <?php
                 settings_fields('cwp_woo_product_carousel_options_group');
-                
+
                 foreach ($this->sections as $section) {
                     $this->render_tab_content($section);
                 }
-                
-                submit_button('Save Settings'); 
+
+                submit_button('Save Settings');
                 ?>
             </form>
         </div>
-        <?php
+<?php
     }
 
     private function render_tab_content(array $section): void
@@ -415,7 +427,7 @@ class CWP_Woo_Product_Carousel_Settings
             }
         }
         $content = ob_get_clean();
-        
+
         echo $content;
         echo '</div>';
     }

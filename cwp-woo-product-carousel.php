@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: CWP Woo Product Carousel
- * Description: Display a carousel of WooCommerce products.
+ * Description: Lightweight WooCommerce product carousel using Embla Carousel.
  * Version: 1.0.0
  * Author: CuongPham
  * Author URI: https://cuongwp.com
