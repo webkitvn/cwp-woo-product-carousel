@@ -127,11 +127,11 @@ class CWP_Woo_Product_Carousel_Settings
                 'default'   => true
             ],
             [
-                'id'        => 'show_dots',
-                'title'     => __('Show Navigation Dots', 'cwp-woo-product-carousel'),
+                'id'        => 'looping',
+                'title'     => __('Enable Looping', 'cwp-woo-product-carousel'),
                 'type'      => 'checkbox',
-                'section'   => 'cwp_layout_section',
-                'tab'       => 'layout-settings',
+                'section'   => 'cwp_behavior_section',
+                'tab'       => 'behavior-settings',
                 'default'   => true
             ],
             [
@@ -141,34 +141,6 @@ class CWP_Woo_Product_Carousel_Settings
                 'section'   => 'cwp_behavior_section',
                 'tab'       => 'behavior-settings',
                 'default'   => true
-            ],
-            [
-                'id'        => 'looping',
-                'title'     => __('Enable Looping', 'cwp-woo-product-carousel'),
-                'type'      => 'checkbox',
-                'section'   => 'cwp_behavior_section',
-                'tab'       => 'behavior-settings',
-                'default'   => true
-            ],
-            [
-                'id'        => 'animation_speed',
-                'title'     => __('Animation Speed (ms)', 'cwp-woo-product-carousel'),
-                'type'      => 'number',
-                'section'   => 'cwp_behavior_section',
-                'tab'       => 'behavior-settings',
-                'default'   => 500,
-                'min'       => 100,
-                'max'       => 2000
-            ],
-            [
-                'id'        => 'autoplay_speed',
-                'title'     => __('Autoplay Speed (ms)', 'cwp-woo-product-carousel'),
-                'type'      => 'number',
-                'section'   => 'cwp_behavior_section',
-                'tab'       => 'behavior-settings',
-                'default'   => 3000,
-                'min'       => 1000,
-                'max'       => 10000
             ],
             [
                 'id'        => 'conditional_loading',

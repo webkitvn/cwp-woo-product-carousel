@@ -1,0 +1,19 @@
+{
+	"dependencies": {
+		"autoprefixer": "^10.4.20",
+		"embla-carousel": "^8.5.1",
+		"embla-carousel-auto-scroll": "^8.5.1",
+		"embla-carousel-autoplay": "^8.5.1",
+		"embla-carousel-class-names": "^8.5.1",
+		"esbuild": "^0.19.12",
+		"esbuild-plugin-sass": "^1.0.1",
+		"postcss": "^8.4.49"
+	},
+	"scripts": {
+		"build": "node esbuild.config.js",
+		"watch": "node esbuild.config.js --watch"
+	},
+	"devDependencies": {
+		"@fullhuman/postcss-purgecss": "^6.0.0"
+	}
+}

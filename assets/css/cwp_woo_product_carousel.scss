@@ -1,0 +1,69 @@
+.embla {
+    overflow: hidden;
+    width: 100%;
+    margin: 20px 0;
+    position: relative;
+    &__viewport {
+        overflow: hidden;
+        width: 100%;
+        &.is-dragging {
+            cursor: grabbing;
+        }
+    }
+    &__container {
+        display: flex;
+    }
+
+    &__slide {
+        position: relative;
+        margin-right: 10px;
+        background: #f9f9f9;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 10px;
+        }
+
+        h2 {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+        }
+
+        .price {
+            font-weight: bold;
+            color: #333;
+        }
+    }
+    .embla__arrow{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        color: #333;
+        background: #fff;
+        border-radius: 50%;
+        opacity: 0.5;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        transition: opacity 0.2s ease;
+        &:hover{
+            opacity: 1;
+        }
+        svg{
+            width: 60%;
+        }
+        &.embla__prev{
+            left: 10px;
+        }
+        &.embla__next{
+            right: 10px;
+        }
+    }
+}
