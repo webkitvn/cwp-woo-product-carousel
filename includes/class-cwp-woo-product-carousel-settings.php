@@ -370,7 +370,7 @@ class CWP_Woo_Product_Carousel_Settings
             echo '<h3>' . __('Quick Start Guide', 'cwp-woo-product-carousel') . '</h3>';
             echo '<div class="cwp-shortcode-usage">';
             echo '<p><strong>' . __('Basic Usage:', 'cwp-woo-product-carousel') . '</strong></p>';
-            echo '<code>[cwp_woo_products_slider id="1,2,3"]</code>';
+            echo '<code>[cwp_woo_products_carousel id="1,2,3"]</code>';
             echo '<p>' . __('Replace 1,2,3 with your desired product IDs', 'cwp-woo-product-carousel') . '</p>';
             echo '</div>';
 

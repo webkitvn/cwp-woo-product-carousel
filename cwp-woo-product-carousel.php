@@ -41,11 +41,11 @@ class CWP_Product_Carousel
     }
 
     /**
-     * Registers the [cwp_woo_products_slider] shortcode.
+     * Registers the [cwp_woo_products_carousel] shortcode.
      */
     public function register_shortcode()
     {
-        add_shortcode('cwp_woo_products_slider', array($this, 'render_shortcode'));
+        add_shortcode('cwp_woo_products_carousel', array($this, 'render_shortcode'));
     }
 
     /**
@@ -60,7 +60,7 @@ class CWP_Product_Carousel
 
         $atts = shortcode_atts(array(
             'id' => '',
-        ), $atts, 'cwp_woo_products_slider');
+        ), $atts, 'cwp_woo_products_carousel');
 
         $ids = array_filter(array_map('trim', explode(',', $atts['id'])));
 
@@ -142,7 +142,7 @@ class CWP_Product_Carousel
     {
         // Check if shortcode appears in the global $post object
         global $post;
-        if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'cwp_woo_products_slider')) {
+        if (is_a($post, 'WP_Post') && has_shortcode($post->post_content, 'cwp_woo_products_carousel')) {
             // Enqueue our initialization script
             wp_enqueue_script('cwp-init-embla', plugin_dir_url(__FILE__) . 'assets/dist/js/init-embla.js', array(), '1.0.0', true);
             // Enqueue our styles
