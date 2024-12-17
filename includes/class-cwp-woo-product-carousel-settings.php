@@ -31,6 +31,11 @@ class CWP_Woo_Product_Carousel_Settings
     private function define_sections(): void
     {
         $this->sections = [
+            'how_to_use' => [
+                'id'    => 'cwp_how_to_use_section',
+                'title' => __('How to Use', 'cwp-woo-product-carousel'),
+                'tab'   => 'how-to-use',
+            ],
             'layout' => [
                 'id'    => 'cwp_layout_section',
                 'title' => __('Layout and Design Settings', 'cwp-woo-product-carousel'),
@@ -42,12 +47,6 @@ class CWP_Woo_Product_Carousel_Settings
                 'title' => __('Carousel Behavior', 'cwp-woo-product-carousel'),
                 'description' => __('Configure the behavior settings for the product carousel.', 'cwp-woo-product-carousel'),
                 'tab'   => 'behavior-settings',
-            ],
-            'advanced' => [
-                'id'    => 'cwp_advanced_section',
-                'title' => __('Advanced Settings', 'cwp-woo-product-carousel'),
-                'description' => __('Configure the advanced settings for the product carousel.', 'cwp-woo-product-carousel'),
-                'tab'   => 'advanced-settings',
             ],
             'credits' => [
                 'id'    => 'cwp_credits_section',
@@ -141,14 +140,6 @@ class CWP_Woo_Product_Carousel_Settings
                 'section'   => 'cwp_behavior_section',
                 'tab'       => 'behavior-settings',
                 'default'   => true
-            ],
-            [
-                'id'        => 'conditional_loading',
-                'title'     => __('Load Scripts Only on Shortcode Pages', 'cwp-woo-product-carousel'),
-                'type'      => 'checkbox',
-                'section'   => 'cwp_advanced_section',
-                'tab'       => 'advanced-settings',
-                'default'   => false
             ]
         ];
     }
@@ -364,7 +355,7 @@ class CWP_Woo_Product_Carousel_Settings
         printf(
             '<div id="%s" class="tab-content" style="display:%s;">',
             esc_attr($section['tab']),
-            $section['tab'] === 'layout-settings' ? 'block' : 'none'
+            $section['tab'] === 'how-to-use' ? 'block' : 'none'
         );
 
         // Add tab title and description
@@ -380,19 +371,27 @@ class CWP_Woo_Product_Carousel_Settings
             );
         }
 
-        // Capture the output of settings fields for this specific section
-        ob_start();
-        foreach ($this->fields as $field) {
-            if ($field['section'] === $section['id']) {
-                echo '<table class="form-table">';
-                do_settings_fields('cwp_woo_product_carousel', $section['id']);
-                echo '</table>';
-                break;
+        if ($section['tab'] === 'how-to-use') {
+            // Display specific content for "how-to-use" tab
+            echo '<div class="how-to-use-content">';
+            echo '<p>' . __('To display the product carousel, use the shortcode <code>[cwp_woo_products_slider]</code>.', 'cwp-woo-product-carousel') . '</p>';
+            echo '<p>' . __('You can customize the carousel settings in the other tabs.', 'cwp-woo-product-carousel') . '</p>';
+            echo '</div>';
+        } else {
+            // Capture the output of settings fields for this specific section
+            ob_start();
+            foreach ($this->fields as $field) {
+                if ($field['section'] === $section['id']) {
+                    echo '<table class="form-table">';
+                    do_settings_fields('cwp_woo_product_carousel', $section['id']);
+                    echo '</table>';
+                    break;
+                }
             }
+            $content = ob_get_clean();
+            echo $content;
         }
-        $content = ob_get_clean();
-
-        echo $content;
+    
         echo '</div>';
     }
 }
