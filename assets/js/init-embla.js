@@ -3,7 +3,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import ClassNames from 'embla-carousel-class-names';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const carousels = document.querySelectorAll('.embla');
+    const carousels = document.querySelectorAll('.cwp__carousel .embla');
     const loop = cwpCarouselOptions.looping;
     const autoplayEnabled = cwpCarouselOptions.autoplay;
 
@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const prevButton = emblaNode.querySelector('.embla__prev');
         const nextButton = emblaNode.querySelector('.embla__next');
         const viewport = emblaNode.querySelector('.embla__viewport');
+        console.log(viewport);
         const options = {
             loop,
             align: 'start',

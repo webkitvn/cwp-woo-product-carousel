@@ -84,25 +84,27 @@ class CWP_Product_Carousel
 
         ob_start();
 ?>
-        <div class="embla cwp-carousel cwp-products products">
-            <div class="embla__viewport">
-                <div class="embla__container">
-                    <?php while ($query->have_posts()) : $query->the_post();
-                        global $product;
-                        $image_id = $product->get_image_id();
-                        $image_url = $image_id ? wp_get_attachment_image_src($image_id, 'medium')[0] : wc_placeholder_img_src();
-                    ?>
-                        <div class="embla__slide cwp-carousel-item">
-                            <?php
-                            wc_get_template_part('content', 'product');
-                            ?>
-                        </div>
-                    <?php endwhile; ?>
+        <div class="cwp__carousel products">
+            <div class="embla">
+                <div class="embla__viewport cwp__carousel__viewport">
+                    <div class="embla__container cwp__carousel__container">
+                        <?php while ($query->have_posts()) : $query->the_post();
+                            global $product;
+                            $image_id = $product->get_image_id();
+                            $image_url = $image_id ? wp_get_attachment_image_src($image_id, 'medium')[0] : wc_placeholder_img_src();
+                        ?>
+                            <div class="embla__slide cwp__carousel__slide cwp__carousel__item">
+                                <?php
+                                wc_get_template_part('content', 'product');
+                                ?>
+                            </div>
+                        <?php endwhile; ?>
+                    </div>
                 </div>
+                <?php
+                $this->render_nav_arrows();
+                ?>
             </div>
-            <?php
-            $this->render_nav_arrows();
-            ?>
         </div>
     <?php
         wp_reset_postdata();
@@ -121,12 +123,12 @@ class CWP_Product_Carousel
             return;
         }
     ?>
-        <button class="embla__arrow embla__prev" aria-label="Previous">
+        <button class="embla__arrow embla__prev cwp__embla__prev" aria-label="Previous">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
             </svg>
         </button>
-        <button class="embla__arrow embla__next" aria-label="Next">
+        <button class="embla__arrow embla__next cwp__embla__next" aria-label="Next">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
@@ -174,21 +176,21 @@ class CWP_Product_Carousel
 
         // Generate dynamic CSS
         $custom_css = "
-            .cwp-carousel-item {
+            .cwp__carousel__item {
                 margin-right: {$spacing}px;
             }
             @media (max-width: 767px) {
-                .cwp-carousel-item {
+                .cwp__carousel__item {
                     flex: 0 0 calc((100% - {$spacing}px * ({$mobile_products} - 1)) / {$mobile_products});
                 }
             }
             @media (min-width: 768px) and (max-width: 1024px) {
-                .cwp-carousel-item {
+                .cwp__carousel__item {
                     flex: 0 0 calc((100% - {$spacing}px * ({$tablet_products} - 1)) / {$tablet_products});
                 }
             }
             @media (min-width: 1025px) {
-                .cwp-carousel-item {
+                .cwp__carousel__item {
                     flex: 0 0 calc((100% - {$spacing}px * ({$desktop_products} - 1)) / {$desktop_products});
                 }
             }
