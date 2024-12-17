@@ -48,15 +48,6 @@ class CWP_Woo_Product_Carousel_Settings
                 'description' => __('Configure the behavior settings for the product carousel.', 'cwp-woo-product-carousel'),
                 'tab'   => 'behavior-settings',
             ],
-            'credits' => [
-                'id'    => 'cwp_credits_section',
-                'title' => __('Credits', 'cwp-woo-product-carousel'),
-                'description' => sprintf(
-                    __('Thank you for using CWP Product Carousel! <a href="%s" target="_blank">Donate via PayPal</a>', 'cwp-woo-product-carousel'),
-                    'https://www.paypal.com/donate?hosted_button_id=YOUR_BUTTON_ID'
-                ),
-                'tab'   => 'credits',
-            ]
         ];
     }
 
@@ -127,7 +118,7 @@ class CWP_Woo_Product_Carousel_Settings
             ],
             [
                 'id'        => 'looping',
-                'title'     => __('Enable Looping', 'cwp-woo-product-carousel'),
+                'title'     => __('Looping', 'cwp-woo-product-carousel'),
                 'type'      => 'checkbox',
                 'section'   => 'cwp_behavior_section',
                 'tab'       => 'behavior-settings',
@@ -174,13 +165,13 @@ class CWP_Woo_Product_Carousel_Settings
             return;
         }
         $this->settings_registered = true;
-    
+
         register_setting(
             'cwp_woo_product_carousel_options_group',
             $this->option_name,
             [$this, 'sanitize_options']
         );
-    
+
         $this->register_sections();
         $this->register_fields();
     }
@@ -373,9 +364,42 @@ class CWP_Woo_Product_Carousel_Settings
 
         if ($section['tab'] === 'how-to-use') {
             // Display specific content for "how-to-use" tab
-            echo '<div class="how-to-use-content">';
-            echo '<p>' . __('To display the product carousel, use the shortcode <code>[cwp_woo_products_slider]</code>.', 'cwp-woo-product-carousel') . '</p>';
-            echo '<p>' . __('You can customize the carousel settings in the other tabs.', 'cwp-woo-product-carousel') . '</p>';
+            echo '<div class="cwp-documentation">';
+            // How to Use Section
+            echo '<div class="cwp-how-to-use">';
+            echo '<h3>' . __('Quick Start Guide', 'cwp-woo-product-carousel') . '</h3>';
+            echo '<div class="cwp-shortcode-usage">';
+            echo '<p><strong>' . __('Basic Usage:', 'cwp-woo-product-carousel') . '</strong></p>';
+            echo '<code>[cwp_woo_products_slider id="1,2,3"]</code>';
+            echo '<p>' . __('Replace 1,2,3 with your desired product IDs', 'cwp-woo-product-carousel') . '</p>';
+            echo '</div>';
+
+            echo '<div class="cwp-find-product-id">';
+            echo '<p><strong>' . __('Finding Product IDs:', 'cwp-woo-product-carousel') . '</strong></p>';
+            echo '<ol>';
+            echo '<li>' . __('Go to WooCommerce Products', 'cwp-woo-product-carousel') . '</li>';
+            echo '<li>' . __('Edit your product', 'cwp-woo-product-carousel') . '</li>';
+            echo '<li>' . __('Look at the URL: post.php?post=123&action=edit', 'cwp-woo-product-carousel') . '</li>';
+            echo '<li>' . __('The number (123) is your product ID', 'cwp-woo-product-carousel') . '</li>';
+            echo '</ol>';
+            echo '</div>';
+            echo '</div>';
+
+            // Support Section
+            echo '<div class="cwp-support">';
+            echo '<h3>' . __('Need Help?', 'cwp-woo-product-carousel') . '</h3>';
+            echo '<p>' . __('Send me a message on Telegram:', 'cwp-woo-product-carousel') . '</p>';
+            echo '<p><a href="https://t.me/cuongwp" class="button button-secondary">@cuongwp</a></p>';
+            echo '</div>';
+
+            // Donation Section
+            echo '<div class="cwp-donate">';
+            echo '<h3>' . __('Support the Development', 'cwp-woo-product-carousel') . '</h3>';
+            echo '<p>' . __('Help keep this plugin free and actively maintained!', 'cwp-woo-product-carousel') . '</p>';
+            echo '<a href="https://buymeacoffee.com/cuongwp" target="_blank" class="bmc-button">';
+            echo '<img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px; width: 217px;">';
+            echo '</a>';
+            echo '</div>';
             echo '</div>';
         } else {
             // Capture the output of settings fields for this specific section
@@ -391,7 +415,7 @@ class CWP_Woo_Product_Carousel_Settings
             $content = ob_get_clean();
             echo $content;
         }
-    
+
         echo '</div>';
     }
 }

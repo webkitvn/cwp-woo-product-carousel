@@ -65,7 +65,7 @@ class CWP_Product_Carousel
         $ids = array_filter(array_map('trim', explode(',', $atts['id'])));
 
         if (empty($ids)) {
-            return '<p>No products found. Please specify product IDs.</p>';
+            return '<p class="cwp-no-found">No products found. Please specify product IDs.</p>';
         }
 
         // Use WP_Query to fetch specified products
@@ -79,7 +79,7 @@ class CWP_Product_Carousel
 
         if (! $query->have_posts()) {
             wp_reset_postdata();
-            return '<p>No products found for the provided IDs.</p>';
+            return '<p class="cwp-no-found">No products found for the provided IDs.</p>';
         }
 
         ob_start();
